@@ -30,13 +30,15 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 // CORS configuration
 app.use(cors({
   origin: process.env.NODE_ENV === 'production'
-    ? ['https://campus-resolve-portal-a9dbxec8y-newp.vercel.app']
+    ? [
+        'https://campus-resolve-portal-crp.vercel.app',
+        'https://campus-resolve-portal-a9dbxec8y-newp.vercel.app'
+      ]
     : ['http://localhost:5173', 'http://localhost:3000'],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
-
 // Routes
 app.use('/api/auth', authRoutes);
 
