@@ -7,7 +7,9 @@ require('dotenv').config({ path: './config.env' });
 
 const authRoutes = require('./routes/auth');
 
+
 const app = express();
+app.set('trust proxy', 1); // Trust first proxy for correct rate limiting
 
 // Security middleware
 app.use(helmet());
