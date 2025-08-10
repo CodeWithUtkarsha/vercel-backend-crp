@@ -119,31 +119,16 @@ const connectDB = async () => {
   }
 };
 
-// Start server
-const PORT = process.env.PORT || 5000;
 
-const startServer = async () => {
-  await connectDB();
-  
-  app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-    console.log(`Environment: ${process.env.NODE_ENV}`);
-    console.log(`Health check: http://localhost:${PORT}/api/health`);
-  });
+let isConnected = false;
+const ensureDB = async () => {
+  if (!isConnected) {
+    await connectDB();
+    isConnected = true;
+  }
 };
 
-startServer();
-
-// Handle unhandled promise rejections
-process.on('unhandledRejection', (err, promise) => {
-  console.log(`Error: ${err.message}`);
-  // Close server & exit process
-  process.exit(1);
-});
-
-// Handle uncaught exceptions
-process.on('uncaughtException', (err) => {
-  console.log(`Error: ${err.message}`);
-  // Close server & exit process
-  process.exit(1);
-}); 
+module.exports = async (req, res) => {
+  await ensureDB();
+  app(req, res);
+};
